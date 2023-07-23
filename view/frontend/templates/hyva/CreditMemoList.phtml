@@ -1,0 +1,134 @@
+<?php declare(strict_types=1);
+
+use Commerce365\CreditMemos\Block\CreditMemoList;
+use Magento\Framework\Escaper;
+
+/** @var CreditMemoList $block */
+/** @var Escaper $escaper */
+
+$totalResults = 0;
+$creditMemos = [];
+$creditMemosResponse = $block->getCreditMemos();
+
+if (!empty($creditMemosResponse)) {
+    $creditMemos = $creditMemosResponse["salesDocuments"];
+    $totalResults = $creditMemosResponse["totalResults"];
+}
+
+$creditMemoCount = count($creditMemos);
+?>
+
+<div class="orders-history">
+    <div class="text-2xl mb-6"><?= $escaper->escapeHtml(__('My Credit Memos')) ?></div>
+    <?php if ($creditMemoCount > 0): ?>
+    <form action="<?= $escaper->escapeUrl($block->getFilterActionUrl()) ?>" method="get">
+        <div class="search-form-fields mb-4">
+            <input type="text" class="form-input w-full md:w-96"
+                placeholder="<?= $escaper->escapeHtml(__('Search...')) ?>" name="searchString" />
+            <button type="submit" title="<?= $escaper->escapeHtml(__('Search')) ?>" class="btn btn-primary">
+                <span><?= $escaper->escapeHtml(__('Search')) ?></span>
+            </button>
+        </div>
+    </form>
+    <?php if ($block->getSearchString()): ?>
+    <?= $escaper->escapeHtml(__('Current filter')) ?>: <?= $escaper->escapeHtml($block->getSearchString()) ?>
+    <a href="<?= $escaper->escapeUrl($block->getFilterActionUrl()) ?>"><?= $escaper->escapeHtml(__('Reset')) ?></a>
+    <?php endif; ?>
+    <div class="card mb-6 overflow-x-auto">
+        <table id="my-orders-table" class="w-full">
+            <thead>
+                <tr>
+                    <th scope="col" class="col id p-2 text-left">
+                        <a href="<?= $block->getSortLink('No.')?>">
+                            <?= $escaper->escapeHtml(__('Credit Memo #')) ?>
+                            <?= $escaper->escapeHtml($block->getSortIcon('No.')) ?>
+                        </a>
+                    </th>
+                    <th scope="col" class="col date p-2 text-left">
+                        <a href="<?= $block->getSortLink('Document Date')?>">
+                            <?= $escaper->escapeHtml(__('Date')) ?>
+                            <?= $escaper->escapeHtml($block->getSortIcon('Document Date')) ?>
+                        </a>
+                    </th>
+                    <th scope="col" class="col shipping p-2 text-left">
+                        <a href="<?= $block->getSortLink('Sell-to Customer Name')?>">
+                            <?= $escaper->escapeHtml(__('Credit To')) ?>
+                            <?= $escaper->escapeHtml($block->getSortIcon('Sell-to Customer Name')) ?>
+                        </a>
+                    </th>
+                    <th scope="col" class="col total p-2 text-left">
+                        <a href="<?= $block->getSortLink('Amount Including VAT')?>">
+                            <?= $escaper->escapeHtml(__('Credit Total')) ?>
+                            <?= $escaper->escapeHtml($block->getSortIcon('Amount Including VAT')) ?>
+                        </a>
+                    </th>
+                    <th scope="col" class="col total p-2 text-left">
+                        <a href="<?= $block->getSortLink('Remaining Amount')?>">
+                            <?= $escaper->escapeHtml(__('Open Amount')) ?>
+                            <?= $escaper->escapeHtml($block->getSortIcon('Remaining Amount')) ?>
+                        </a>
+                    </th>
+                    <th scope="col" class="col actions p-2 text-left"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($creditMemos as $creditMemo): ?>
+                <tr class="align-top even:bg-gray-100">
+                    <td data-th="Order #" class="col id p-2"><?= /* @noEscape */ $creditMemo["No."] ?></td>
+                    <td data-th="Date" class="col date p-2">
+                        <?= /* @noEscape */ date_format(date_create($creditMemo["Document Date"]), "d-m-Y") ?></td>
+                    <td data-th="Ship To #" class="col id p-2">
+                        <?= /* @noEscape */ $creditMemo["Sell-to Customer Name"] ?></td>
+                    <td data-th="Total" class="col total p-2">
+                        <?= /* @noEscape */ $creditMemo["Currency Code"] ?>
+                        <?= /* @noEscape */ number_format((float)$creditMemo["Amount Including VAT"], 2, ',', '.') ?>
+                    </td>
+                    <td data-th="Total" class="col total p-2">
+                        <?= /* @noEscape */ $creditMemo["Currency Code"] ?>
+                        <?= /* @noEscape */ number_format((float)$creditMemo["Remaining Amount"], 2, ',', '.') ?>
+                    </td>
+                    <td data-th="Actions" class="col actions p-2">
+                        <a href="<?= $escaper->escapeUrl($block->getViewUrl($creditMemo["id"])) ?>"
+                            class="inline-block text-sm underline text-secondary-darker">
+                            <span><?= $escaper->escapeHtml(__("View Credit Memo")) ?></span>
+                        </a>
+                        <span class="text-secondary-lighter"> | </span>
+                        <a href="<?= $escaper->escapeUrl($creditMemo["PDFUrl"]) ?>"
+                            class="inline-block text-sm underline text-secondary-darker" target="_blank"
+                            rel="noopener noreferrer">
+                            <span>PDF</span>
+                        </a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php else: ?>
+    <div class="message info empty"><span><?= $escaper->escapeHtml(__('No credit memos found.')) ?></span></div>
+    <?php endif; ?>
+</div>
+
+<?php if ($totalResults > $block->getPageSize()): ?>
+<div class="flex flex-col gap-2 md:flex-row md:items-center">
+    <?php
+            $totalPages = $creditMemosResponse["totalPages"];
+            $currentPage = $block->getPage();
+        ?>
+    <div>
+        <?= $escaper->escapeHtml(__('Page: %1 of %2', $currentPage, $totalPages)) ?>
+    </div>
+    <div class="flex flex-wrap justify-between items-center gap-2">
+        <?php if ($block->getPage() > 1): ?>
+        <a href="<?= $block->getPreviousPageUrl($block->getPage()) ?>" class="btn btn-secondary""><?= $escaper->escapeHtml(__('Previous')) ?></a>
+            <?php endif; ?>
+            <?php if ($block->getPage() > 1 && $block->getPage() < $creditMemosResponse["totalPages"]): ?>
+                -
+            <?php endif; ?>
+            <?php if ($block->getPage() < $creditMemosResponse["totalPages"]): ?>
+            <a href=" <?= $block->getNextPageUrl($block->getPage()) ?>"
+            class="btn btn-secondary"><?= $escaper->escapeHtml(__('Next')) ?></a>
+        <?php endif; ?>
+    </div>
+</div>
+<?php endif; ?>
