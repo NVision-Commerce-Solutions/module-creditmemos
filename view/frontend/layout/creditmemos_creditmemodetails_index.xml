@@ -1,13 +1,19 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="customer_account"/>
     <head>
         <title>Credit Memo Details</title>
     </head>
     <body>
-        <referenceBlock name="page.main.title" remove="true" />
+        <referenceBlock name="page.main.title">
+            <arguments>
+                <argument name="css_class" xsi:type="string">sr-only</argument>
+            </arguments>
+        </referenceBlock>
         <referenceContainer name="content">
-            <block class="Commerce365\CreditMemos\Block\CreditMemoDetails" name="creditMemoDetails" template="CreditMemoDetails.phtml" cacheable="false" />
+            <block class="Commerce365\CreditMemos\Block\CreditMemoDetails" name="creditMemoDetails"
+                template="CreditMemoDetails.phtml" cacheable="false"/>
         </referenceContainer>
     </body>
 </page>
