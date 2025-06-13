@@ -111,13 +111,13 @@ if (!empty($creditMemosResponse)) {
     </div>
     <div>
         <?php if ($block->getPage() > 1): ?>
-        <a href="<?= $this->getPreviousPageLink($block->getPage()) ?>" class="action order"><?= __('Previous') ?></a>
+        <a href="<?= $block->getPreviousPageUrl() ?>" class="action order"><?= __('Previous') ?></a>
         <?php endif; ?>
         <?php if ($block->getPage() > 1 && $block->getPage() < $creditMemosResponse["totalPages"]): ?>
             -
         <?php endif; ?>
         <?php if ($block->getPage() < $creditMemosResponse["totalPages"]): ?>
-        <a href="<?= $this->getNextPageLink($block->getPage()) ?>" class="action order"><?= __('Next') ?></a>
+        <a href="<?= $block->getNextPageUrl() ?>" class="action order"><?= __('Next') ?></a>
         <?php endif; ?>
     </div>
 <?php endif; ?>

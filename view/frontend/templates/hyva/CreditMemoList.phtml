@@ -140,13 +140,13 @@ $creditMemoCount = count($creditMemos);
     </div>
     <div class="flex flex-wrap justify-between items-center gap-2">
         <?php if ($block->getPage() > 1): ?>
-        <a href="<?= $block->getPreviousPageUrl($block->getPage()) ?>" class="btn btn-secondary""><?= $escaper->escapeHtml(__('Previous')) ?></a>
+        <a href="<?= $block->getPreviousPageUrl() ?>" class="btn btn-secondary""><?= $escaper->escapeHtml(__('Previous')) ?></a>
             <?php endif; ?>
             <?php if ($block->getPage() > 1 && $block->getPage() < $creditMemosResponse["totalPages"]): ?>
                 -
             <?php endif; ?>
             <?php if ($block->getPage() < $creditMemosResponse["totalPages"]): ?>
-            <a href=" <?= $block->getNextPageUrl($block->getPage()) ?>"
+            <a href=" <?= $block->getNextPageUrl() ?>"
             class="btn btn-secondary"><?= $escaper->escapeHtml(__('Next')) ?></a>
         <?php endif; ?>
     </div>
