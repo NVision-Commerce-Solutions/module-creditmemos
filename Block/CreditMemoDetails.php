@@ -30,4 +30,9 @@ class CreditMemoDetails extends Template
 
         return $this->getSalesDocument->execute($query);
     }
+
+    public function safeGet(array $array, string $key, $default = '')
+    {
+        return $array[$key] ?? $default;
+    }
 }
