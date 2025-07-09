@@ -63,7 +63,7 @@ $creditMemoCount = count($creditMemos);
                         </th>
                     <?php endif; ?>
                     <?php if($this->isColumnExists($creditMemos, 'Amount Including VAT')): ?>
-                        <th scope="col" class="col total p-2 text-left">
+                        <th scope="col" class="col total p-2 text-right">
                             <a href="<?= $block->getSortLink('Amount Including VAT')?>">
                                 <?= $escaper->escapeHtml(__('Credit Total')) ?>
                                 <?= $escaper->escapeHtml($block->getSortIcon('Amount Including VAT')) ?>
@@ -71,14 +71,14 @@ $creditMemoCount = count($creditMemos);
                         </th>
                     <?php endif; ?>
                     <?php if($this->isColumnExists($creditMemos, 'Remaining Amount')): ?>
-                        <th scope="col" class="col total p-2 text-left">
+                        <th scope="col" class="col total p-2 text-right">
                             <a href="<?= $block->getSortLink('Remaining Amount')?>">
                                 <?= $escaper->escapeHtml(__('Open Amount')) ?>
                                 <?= $escaper->escapeHtml($block->getSortIcon('Remaining Amount')) ?>
                             </a>
                         </th>
                     <?php endif; ?>
-                    <th scope="col" class="col actions p-2 text-left"></th>
+                    <th scope="col" class="col actions p-2 text-right"></th>
                 </tr>
             </thead>
             <tbody>
@@ -96,25 +96,25 @@ $creditMemoCount = count($creditMemos);
                             <?= /* @noEscape */ $creditMemo["Sell-to Customer Name"] ?></td>
                     <?php endif; ?>
                     <?php if($this->isColumnExists($creditMemos, 'Document Date')): ?>
-                        <td data-th="Total" class="col total p-2">
-                            <?= /* @noEscape */ $creditMemo["Amount Including VAT"] ?>
+                        <td data-th="Total" class="col total p-2 text-right">
+                            <?= /* @noEscape */ $creditMemo["Currency Code"] ?>
                             <?= /* @noEscape */ number_format((float)$creditMemo["Amount Including VAT"], 2, ',', '.') ?>
                         </td>
                     <?php endif; ?>
                     <?php if($this->isColumnExists($creditMemos, 'Remaining Amount')): ?>
-                        <td data-th="Total" class="col total p-2">
+                        <td data-th="Total" class="col total p-2 text-right">
                             <?= /* @noEscape */ $creditMemo["Currency Code"] ?>
                             <?= /* @noEscape */ number_format((float)$creditMemo["Remaining Amount"], 2, ',', '.') ?>
                         </td>
                     <?php endif; ?>
-                    <td data-th="Actions" class="col actions p-2">
+                    <td data-th="Actions" class="col actions p-2 text-right">
                         <a href="<?= $escaper->escapeUrl($block->getViewUrl($creditMemo["id"])) ?>"
-                            class="inline-block text-sm underline text-secondary-darker">
+                            class="inline-block">
                             <span><?= $escaper->escapeHtml(__("View Credit Memo")) ?></span>
                         </a>
-                        <span class="text-secondary-lighter"> | </span>
+                        <span> | </span>
                         <a href="<?= $escaper->escapeUrl($creditMemo["PDFUrl"]) ?>"
-                            class="inline-block text-sm underline text-secondary-darker" target="_blank"
+                            class="inline-block" target="_blank"
                             rel="noopener noreferrer">
                             <span>PDF</span>
                         </a>
