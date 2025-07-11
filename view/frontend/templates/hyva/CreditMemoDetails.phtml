@@ -48,7 +48,7 @@ if ((float)$block->safeGet($creditMemo, 'Remaining Amount', 0) > 0) {
             <table id="my-orders-table" class="w-full border-collapse">
                 <caption class="sr-only"><?= __('Items Credited') ?></caption>
 
-                <thead class="hidden md:table-header-group bg-gray-100">
+                <thead class="hidden md:table-header-group">
                 <tr>
                     <th class="p-2 text-left"><?= __('Product Name') ?></th>
                     <th class="p-2 text-left"><?= __('SKU') ?></th>
@@ -82,7 +82,7 @@ if ((float)$block->safeGet($creditMemo, 'Remaining Amount', 0) > 0) {
                         </td>
                         <td class="block md:table-cell text-right p-2 md:align-top">
                             <span class="md:hidden font-medium"><?= __('Qty') ?>: </span>
-                            <?= $escaper->escapeHtml($block->safeGet($creditMemoLine, 'Quantity')) ?>
+                            <?= $escaper->escapeHtml($block->safeGet($creditMemoLine, 'Quantity') !== 0 ?: '') ?>
                         </td>
                         <td class="block md:table-cell p-2 text-right md:align-top">
                             <span class="md:hidden font-medium"><?= __('Subtotal') ?>: </span>
@@ -95,7 +95,7 @@ if ((float)$block->safeGet($creditMemo, 'Remaining Amount', 0) > 0) {
                 <?php endforeach; ?>
                 </tbody>
 
-                <tfoot class="bg-gray-100">
+                <tfoot>
                 <tr>
                     <td colspan="4" class="hidden md:table-cell text-right p-2 font-medium"><?= __('Subtotal') ?></td>
                     <td class="p-2 text-right font-medium">
